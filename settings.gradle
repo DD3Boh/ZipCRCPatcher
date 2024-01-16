@@ -1,0 +1,2 @@
+rootProject.name = 'ZipCRCPatcher'
+include('src')
