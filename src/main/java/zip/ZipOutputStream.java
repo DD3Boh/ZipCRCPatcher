@@ -93,13 +93,7 @@ public class ZipOutputStream extends FilterOutputStream {
      * written in utf-8.
      */
     public static final int UFT8_NAMES_FLAG = 1 << 11;
-    /**
-     * General purpose flag, which indicates that filenames are
-     * written in utf-8.
-     *
-     * @deprecated use {@link #UFT8_NAMES_FLAG} instead
-     */
-    public static final int EFS_FLAG = UFT8_NAMES_FLAG;
+
     /**
      * local file header signature
      *

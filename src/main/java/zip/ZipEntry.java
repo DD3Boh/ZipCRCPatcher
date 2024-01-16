@@ -447,21 +447,6 @@ public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
     }
 
     /**
-     * Make this class work in JDK 1.1 like a 1.2 class.
-     * <p>
-     * <p>This either stores the size for later usage or invokes
-     * setCompressedSize via reflection.</p>
-     *
-     * @param size the size to use
-     * @since 1.2
-     * @deprecated since 1.7.
-     * Use setCompressedSize directly.
-     */
-    public void setComprSize(long size) {
-        setCompressedSize(size);
-    }
-
-    /**
      * Get the name of the entry.
      *
      * @return the entry name
