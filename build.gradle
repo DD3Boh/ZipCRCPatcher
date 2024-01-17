@@ -10,6 +10,14 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'ZipCRCPatcher'
+        )
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked"
     options.compilerArgs << "-Xlint:deprecation"
