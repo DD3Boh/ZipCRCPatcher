@@ -38,7 +38,7 @@ public class ZipCRCPatcher {
     }
 
     public void makeFilesList(String zip) throws IOException {
-        this.zipFileEntries = new ArrayList();
+        this.zipFileEntries = new ArrayList<>();
         Enumeration<ZipEntry> entries = new ZipFile(zip).getEntries();
         while (entries.hasMoreElements()) {
             ZipEntry nextElement = entries.nextElement();
