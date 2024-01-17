@@ -51,7 +51,7 @@ import zip.extrafield.ZipExtraField;
  * @see <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">
  * .ZIP File Format Specification</a>
  */
-public class ZipEntry extends java.util.zip.ZipEntry implements Cloneable {
+public class ZipEntry extends java.util.zip.ZipEntry {
 
     public static final int PLATFORM_UNIX = 3;
     public static final int PLATFORM_FAT = 0;
