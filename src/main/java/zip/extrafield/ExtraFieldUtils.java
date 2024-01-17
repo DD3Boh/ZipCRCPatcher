@@ -40,7 +40,7 @@ public class ExtraFieldUtils {
      *
      * @since 1.1
      */
-    private static final Map<ZipShort, Class> implementations;
+    private static final Map<ZipShort, Class<?>> implementations;
 
     static {
         implementations = new HashMap<>();
@@ -59,9 +59,9 @@ public class ExtraFieldUtils {
      * @param c the class to register
      * @since 1.1
      */
-    public static void register(Class c) {
+    public static <T> void register(Class<T> c) {
         try {
-            ZipExtraField ze = (ZipExtraField) c.newInstance();
+            ZipExtraField ze = (ZipExtraField) c.getDeclaredConstructor().newInstance();
             implementations.put(ze.getHeaderId(), c);
         } catch (ClassCastException cc) {
             throw new RuntimeException(c + " doesn\'t implement ZipExtraField");
@@ -69,6 +69,7 @@ public class ExtraFieldUtils {
             throw new RuntimeException(c + " is not a concrete class");
         } catch (IllegalAccessException ie) {
             throw new RuntimeException(c + "\'s no-arg constructor is not public");
+        } catch (Exception e) {
         }
     }
 
@@ -84,9 +85,12 @@ public class ExtraFieldUtils {
      */
     public static ZipExtraField createExtraField(ZipShort headerId)
             throws InstantiationException, IllegalAccessException {
-        Class c = implementations.get(headerId);
+        Class<?> c = implementations.get(headerId);
         if (c != null) {
-            return (ZipExtraField) c.newInstance();
+            try {
+                return (ZipExtraField) c.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+            }
         }
         UnrecognizedExtraField u = new UnrecognizedExtraField();
         u.setHeaderId(headerId);
