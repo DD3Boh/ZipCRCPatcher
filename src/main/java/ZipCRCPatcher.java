@@ -39,10 +39,12 @@ public class ZipCRCPatcher {
 
     public void makeFilesList(String zip) throws IOException {
         this.zipFileEntries = new ArrayList<>();
-        Enumeration<ZipEntry> entries = new ZipFile(zip).getEntries();
+        ZipFile zipFile = new ZipFile(zip);
+        Enumeration<ZipEntry> entries = zipFile.getEntries();
         while (entries.hasMoreElements()) {
             ZipEntry nextElement = entries.nextElement();
             this.zipFileEntries.add(new FileEntry(nextElement.getName(), nextElement.getCrc(), nextElement.getTime()));
         }
+        zipFile.close();
     }
 }
