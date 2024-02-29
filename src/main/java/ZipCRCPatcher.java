@@ -15,6 +15,15 @@ public class ZipCRCPatcher {
             return;
         }
 
+        if (args[0].equals(null) || args[1].equals(null))
+            throw new IllegalArgumentException("Error: The source and destination files can't be null");
+
+        if (args[0].isEmpty() || args[1].isEmpty())
+            throw new IllegalArgumentException("Error: The source and destination files can't be empty");
+
+        if (args[0].equals(args[1]))
+            throw new IllegalArgumentException("Error: The source and destination files can't be the same");
+
         new ZipCRCPatcher().makeZip(args[0], args[1]);
     }
 
