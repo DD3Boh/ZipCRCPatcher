@@ -29,18 +29,30 @@ public class ZipCRCPatcher {
 
     public void makeZip(String copyFrom, String copyTo) throws IOException {
         makeFilesList(copyFrom);
-        ZipFile zipFile = new ZipFile(copyTo);
-        ZipOutputStream zipOutputStream = new ZipOutputStream(new File(copyTo.replace(".apk", "-crc.apk")));
+        ZipFile zipFile;
+        ZipOutputStream zipOutputStream;
+        try {
+            zipFile = new ZipFile(copyTo);
+        } catch (IOException e) {
+            throw new IOException("Error: Can't open the file " + copyTo + " as a zip file.");
+        }
+
+        try {
+            zipOutputStream = new ZipOutputStream(new File(copyTo.replace(".apk", "-crc.apk")));
+        } catch (IOException e) {
+            zipFile.close();
+            throw new IOException("Error: Can't write to the file " + copyTo.replace(".apk", "-crc.apk"));
+        }
+        
         zipOutputStream.setLevel(1);
         Enumeration<ZipEntry> entries = zipFile.getEntries();
         while (entries.hasMoreElements()) {
             ZipEntry nextElement = entries.nextElement();
             String name = nextElement.getName();
-            for (int i = 0; i < this.zipFileEntries.size(); i++) {
-                if (name.equals(this.zipFileEntries.get(i).getName())) {
+            for (int i = 0; i < this.zipFileEntries.size(); i++)
+                if (name.equals(this.zipFileEntries.get(i).getName()))
                     nextElement.setCrc(this.zipFileEntries.get(i).getCrc());
-                }
-            }
+
             zipOutputStream.copyZipEntry(nextElement, zipFile);
         }
         zipOutputStream.close();
@@ -48,7 +60,12 @@ public class ZipCRCPatcher {
 
     public void makeFilesList(String zip) throws IOException {
         this.zipFileEntries = new ArrayList<>();
-        ZipFile zipFile = new ZipFile(zip);
+        ZipFile zipFile;
+        try {
+            zipFile = new ZipFile(zip);
+        } catch (IOException e) {
+            throw new IOException("Error: Can't open the file " + zip + " as a zip file.");
+        }
         Enumeration<ZipEntry> entries = zipFile.getEntries();
         while (entries.hasMoreElements()) {
             ZipEntry nextElement = entries.nextElement();
