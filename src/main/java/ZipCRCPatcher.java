@@ -1,3 +1,8 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Author: Davide Garberi (dade.garberi@gmail.com)
+ */
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
