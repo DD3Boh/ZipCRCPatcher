@@ -31,17 +31,31 @@ public class ZipCRCPatcher {
         makeFilesList(copyFrom);
         ZipFile zipFile;
         ZipOutputStream zipOutputStream;
+
         try {
             zipFile = new ZipFile(copyTo);
         } catch (IOException e) {
             throw new IOException("Error: Can't open the file " + copyTo + " as a zip file.");
         }
 
+        String extension = copyTo.substring(copyTo.lastIndexOf("."));
+        if (extension.equals(null) || extension.isEmpty()) {
+            zipFile.close();
+            throw new IllegalArgumentException("Error: The file " + copyTo + " has no extension.");
+        }
+
+        if (!extension.equals(".apk") || !extension.equals(".zip")) {
+            zipFile.close();
+            throw new IllegalArgumentException("Error: The file " + copyTo + " is not a zip file.");
+        }
+
+        String newCopyTo = copyTo.replace(extension, "-crc" + extension);
+
         try {
-            zipOutputStream = new ZipOutputStream(new File(copyTo.replace(".apk", "-crc.apk")));
+            zipOutputStream = new ZipOutputStream(new File(newCopyTo));
         } catch (IOException e) {
             zipFile.close();
-            throw new IOException("Error: Can't write to the file " + copyTo.replace(".apk", "-crc.apk"));
+            throw new IOException("Error: Can't write to the file " + newCopyTo);
         }
         
         zipOutputStream.setLevel(1);
